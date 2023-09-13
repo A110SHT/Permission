@@ -1,0 +1,53 @@
+﻿@using PermissionRepo.Models
+@model RoleMangeModelSummary
+@{
+    int i = 0;
+}
+<style>
+    .hide {
+        display: none;
+    }
+</style>
+
+<a href="/permission/GetAllActionUrl">Get all Url</a>
+
+<div class="container">
+    <form action="/permission/savepermission" method="post">
+
+
+        <div class="col-lg-12">
+            <select class="from-control" asp-for="RoleID" onchange="handleSelectChange(event)">
+                <option value="0">Select Role</option>
+                <option value="1">Admin</option>
+                <option value="2">User</option>
+            </select>
+        </div>
+        <div class="row">
+            @foreach (var item in Model.RoleManageModels)
+            {
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <input type="checkbox" asp-for="RoleManageModels[i].HasAccess" />
+                        <input type="text" asp-for="RoleManageModels[i].Id" class="hide" />
+                        <input type="text" asp-for="RoleManageModels[i].CAId" value="@item.CAId" class="hide" />
+                        <label asp-for="RoleManageModels[i].HasAccess">@item.ControllerName => @item.DisplayName =>  @item.URl</label>
+                    </div>
+                </div>
+                i++;
+            }
+
+        </div>
+        <button type="submit">Save</button>
+    </form>
+</div>
+@section scripts{
+    <script>
+        function handleSelectChange(event) {
+
+            var selectElement = event.target;
+
+            var value = selectElement.value;
+            window.location.href = '/permission/givepermission?role=' + value;
+        }
+    </script>
+}
